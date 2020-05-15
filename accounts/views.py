@@ -25,7 +25,13 @@ def home(request):
 
 
 def products(request):
-    return render(request, 'accounts/products.html')
+    product = Product.objects.all()
+
+    context = {
+        'products': product
+    }
+    
+    return render(request, 'accounts/products.html', context)
 
 
 def customer(request, pk_test):
