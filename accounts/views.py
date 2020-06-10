@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
+from .forms import OrderForm
+
 
 def home(request):
     orders = Order.objects.all()
@@ -47,3 +49,23 @@ def customer(request, pk_test):
     }
     
     return render(request, 'accounts/customer.html', context)
+
+
+def createOrder(request):
+    form = OrderForm()
+    if request.method == 'POST':
+        # print('Printing POST:', request.POST)
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+            
+
+    context = {'form':form}
+    return render(request, 'accounts/order_form.html', context)
+
+# def updateOrder(request):
+#     form = OrderForm()
+    
+#     context = {'form':form}
+#     return render(request, 'accounts/order_form.html', context)
